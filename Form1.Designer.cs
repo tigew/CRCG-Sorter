@@ -1,4 +1,4 @@
-﻿namespace CRCGSorter
+﻿namespace CRCG_Sorter
 {
     partial class Form1
     {
@@ -115,7 +115,7 @@
             this.sortButton.TabIndex = 2;
             this.sortButton.Text = "Sort";
             this.sortButton.UseVisualStyleBackColor = true;
-            this.sortButton.Click += new System.EventHandler(this.button1_Click);
+            this.sortButton.Click += new System.EventHandler((sender, e) => this.sortButton_Click(sender, e));
             // 
             // Form1
             // 
