@@ -154,6 +154,14 @@ namespace CRCG_Sorter
 
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var result = MessageBox.Show(@"Do you want print the current text?", @"Print Current Text or open a new file?",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign, false);
+
+            if (result == DialogResult.Yes && textBox.Text != null)
+            {
+                saveToolStripMenuItem1_Click(sender, e);
+            }
 
             var openFileDialog = new OpenFileDialog
             {
@@ -185,11 +193,9 @@ namespace CRCG_Sorter
             //}
         }
 
-        private void document_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            e.Graphics.DrawString(textBox.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, 10, 25);
-            
-        }
-
+        //private void document_PrintPage(object sender, PrintPageEventArgs e)
+        //{
+        //    e.Graphics.DrawString(textBox.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, 10, 25);
+        //}
     }
 }
