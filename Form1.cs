@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Printing;
 
 namespace CRCG_Sorter
 {
     public partial class Form1 : Form
     {
         private readonly List<string> _namesMaster = new List<string>();
+        //private readonly PrintDocument _document = new PrintDocument();
+        //private readonly PrintDialog _dialog = new PrintDialog();
 
 
         public Form1()
         {
             InitializeComponent();
+            //_document.PrintPage += new PrintPageEventHandler(document_PrintPage);
         }
 
         /// <summary>
@@ -50,9 +56,9 @@ namespace CRCG_Sorter
         /// <param name="e"></param>
         private void saveToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (textBox.Contains(null))
-            {
-            }
+
+            if (textBox.Text == null) return;
+
 
             var saveFileDialog1 = new SaveFileDialog
             {
@@ -104,7 +110,7 @@ namespace CRCG_Sorter
         }
 
         /// <summary>
-        /// Sort function
+        /// Sort function that reprints the data to text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -133,5 +139,57 @@ namespace CRCG_Sorter
 
             _namesMaster.Clear();
         }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show(@"Do you want a new list?", @"This is clear the current list from the box.",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign, false);
+
+            if (result == DialogResult.Yes)
+            {
+                textBox.Clear();
+            }
+        }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = @"txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+                DefaultExt = ".txt"
+            };
+
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+            try
+            {
+                var openname = openFileDialog.FileName;
+                Process.Start("notepad.exe", openname);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"Shit is fucked: 176");
+            }
+
+
+            
+
+            //_dialog.Document = _document;
+            //if (_dialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    _document.Print();
+            //}
+        }
+
+        private void document_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString(textBox.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, 10, 25);
+            
+        }
+
     }
 }
